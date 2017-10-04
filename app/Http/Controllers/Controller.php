@@ -33,7 +33,7 @@ class Controller extends BaseController
         $user = User::find($userId) ?: Auth::user();
 
         if ($user === null)
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException('No user found');
 
         return $user;
 

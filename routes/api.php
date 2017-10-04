@@ -25,6 +25,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::post('likes', 'LikesController@store');
 
+        Route::post('followers', 'FollowersController@store');
+
     });
 
 });

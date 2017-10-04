@@ -47,7 +47,7 @@ class UserCanLikeAThoughtTest extends TestCase
     }
 
     /** @test */
-    public function can_not_line_a_thought_that_does_not_exists()
+    public function can_not_like_a_thought_that_does_not_exists()
     {
 
         $user = factory(User::class)->create();

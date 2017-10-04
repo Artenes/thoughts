@@ -4,6 +4,7 @@ namespace Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Thoughts\Searchable;
 use Thoughts\Thought;
 use Thoughts\User;
 
@@ -30,6 +31,24 @@ class ThoughtTest extends TestCase
         $this->assertDatabaseHas('thoughts', [
             'user_id' => $user->id,
             'body' => 'My first thought about this',
+        ]);
+
+    }
+
+    /** @test */
+    public function thought_can_be_indexed()
+    {
+
+        $thought = factory(Thought::class)->create();
+
+        $searchable = new Searchable();
+
+        $searchable->indexResource($thought);
+
+        $this->assertDatabaseHas('searchables', [
+            'identifier' => $thought->id,
+            'type' => Thought::class,
+            'body' => $thought->body
         ]);
 
     }

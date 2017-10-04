@@ -15,8 +15,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('find', 'FindController@find');
 
-    Route::get('thoughts', 'ThoughtsController@find');
-    Route::get('thoughts/{filter}', 'ThoughtsController@index');
+    Route::get('thoughts/user/{id?}', 'ThoughtsController@find');
+
+    Route::get('thoughts/{filter?}', 'ThoughtsController@index');
 
     Route::get('likes', 'LikesController@find');
 

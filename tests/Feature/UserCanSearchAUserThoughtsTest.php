@@ -24,7 +24,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->getJson("api/v1/thoughts?user={$user->id}")->assertStatus(Response::HTTP_OK);
+        $this->getJson("v1/thoughts/user/{$user->id}")->assertStatus(Response::HTTP_OK);
 
     }
 
@@ -37,7 +37,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
         factory(Thought::class, 10)->create(['user_id' => $user->id]);
         factory(Thought::class, 20)->create();
 
-        $response = $this->getJson("api/v1/thoughts?user={$user->id}&s=random thou");
+        $response = $this->getJson("v1/thoughts/user/{$user->id}?s=random thou");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(1, $response->json()['data']);
         $response->assertJson([
@@ -46,7 +46,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
             ]
         ]);
 
-        $response = $this->getJson("api/v1/thoughts?user={$user->id}");
+        $response = $this->getJson("v1/thoughts/user/{$user->id}");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(11, $response->json()['data']);
 
@@ -61,7 +61,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
         factory(Thought::class, 10)->create(['user_id' => $user->id]);
         factory(Thought::class, 20)->create();
 
-        $response = $this->actingAs($user, 'api')->getJson("api/v1/thoughts?s=random thou");
+        $response = $this->actingAs($user, 'api')->getJson("v1/thoughts/user?s=random thou");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(1, $response->json()['data']);
         $response->assertJson([
@@ -70,7 +70,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
             ]
         ]);
 
-        $response = $this->actingAs($user, 'api')->getJson("api/v1/thoughts");
+        $response = $this->actingAs($user, 'api')->getJson("v1/thoughts/user");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(11, $response->json()['data']);
 
@@ -80,7 +80,7 @@ class UserCanSearchAUserThoughtsTest extends TestCase
     public function returns_404_when_user_is_not_loged_in_and_no_user_is_provided_in_query_string()
     {
 
-        $this->withExceptionHandling()->getJson('api/v1/thoughts')->assertStatus(Response::HTTP_NOT_FOUND);
+        $this->withExceptionHandling()->getJson('v1/thoughts/user')->assertStatus(Response::HTTP_NOT_FOUND);
 
     }
 

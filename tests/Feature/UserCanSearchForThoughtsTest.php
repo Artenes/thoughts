@@ -44,7 +44,7 @@ class UserCanSearchForThoughtsTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                ['id' => $thought->id, 'body' => $thought->body]
+                ['attributes' => ['body' => $thought->body], 'resource' => ['id' => $thought->id]]
             ]
         ]);
 

@@ -22,7 +22,12 @@ class SearchableCollection extends ResourceCollection
 
         return $this->collection->map(function ($searchable) {
 
-            return $searchable->meta;
+            return [
+
+                'attributes' => $searchable->meta,
+                'resource' => ['id' => $searchable->identifier, 'type' => $searchable->type]
+
+            ];
 
         })->toArray();
 

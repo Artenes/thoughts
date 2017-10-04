@@ -4,6 +4,7 @@ namespace Thoughts;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Thoughts\Contracts\SearchableResource;
 
 /**
@@ -43,6 +44,18 @@ class Thought extends Model implements SearchableResource
     {
 
         return $this->belongsTo(User::class);
+
+    }
+
+    /**
+     * The users likes for this thought.
+     *
+     * @return HasMany
+     */
+    public function likes()
+    {
+
+        return $this->hasMany(Like::class);
 
     }
 

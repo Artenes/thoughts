@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -29,7 +29,7 @@ class ThoughtTest extends TestCase
 
         $this->assertDatabaseHas('thoughts', [
             'user_id' => $user->id,
-            'body' => 'My first thought about this',    
+            'body' => 'My first thought about this',
         ]);
 
     }

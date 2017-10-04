@@ -26,7 +26,7 @@ class ThoughtsWithUserCollection extends ResourceCollection
             return [
                 'id' => $thought->id,
                 'body' => $thought->body,
-                'created_at' => $thought->created_at,
+                'created_at' => $thought->created_at->diffForHumans(),
                 'user' => [
                     'id' => $thought->user->id,
                     'name' => $thought->user->name,

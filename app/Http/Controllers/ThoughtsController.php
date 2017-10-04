@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Thoughts\Http\Requests\StoreThoughtRequest;
+use Thoughts\Searchable;
 use Thoughts\Thought;
 
 /**
@@ -28,6 +29,8 @@ class ThoughtsController extends Controller
         $thought = new Thought(['body' => $request->get('body')]);
 
         $thought->postBy(Auth::user());
+
+        (new Searchable())->indexResource($thought);
 
         return response()->json($thought->toArray(),Response::HTTP_CREATED);
 

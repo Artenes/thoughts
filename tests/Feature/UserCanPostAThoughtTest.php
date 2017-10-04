@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Response;
 use Tests\TestCase;
+use Thoughts\Thought;
 use Thoughts\User;
 
 /**
@@ -30,6 +31,11 @@ class UserCanPostAThoughtTest extends TestCase
         $response->assertJson([
             'body' => 'My first thought about this',
             'user_id' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('searchables', [
+            'identifier' => $response->json()['id'],
+            'type' => Thought::class,
         ]);
 
     }

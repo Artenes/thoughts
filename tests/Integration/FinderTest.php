@@ -5,7 +5,7 @@ namespace Tests\Integration;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Thoughts\Finder;
-use Thoughts\Thought;
+use Thoughts\Searchable;
 
 /**
  * Test for the finder to see if it can really fins things.
@@ -21,7 +21,7 @@ class FinderTest extends TestCase
     public function user_can_search_for_thoughts()
     {
 
-        factory(Thought::class)->create(['body' => 'My second thought about this.']);
+        $searchable = factory(Searchable::class)->create(['body' => 'My second thought about this.']);
 
         $finder = new Finder();
 
@@ -29,7 +29,7 @@ class FinderTest extends TestCase
 
         $this->assertCount(1, $results);
 
-        $this->assertEquals('My second thought about this.', $results->first()->body);
+        $this->assertEquals($searchable->body, $results->first()->body);
 
     }
 
@@ -37,7 +37,7 @@ class FinderTest extends TestCase
     public function user_can_search_for_thoughts_with_upper_case_letters()
     {
 
-        factory(Thought::class)->create(['body' => 'My second thought about this.']);
+        factory(Searchable::class)->create(['body' => 'My second thought about this.']);
 
         $finder = new Finder();
 

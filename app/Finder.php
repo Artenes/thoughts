@@ -2,6 +2,7 @@
 
 namespace Thoughts;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -16,14 +17,14 @@ class Finder
      * Find an element.
      *
      * @param $search
-     * @return mixed
+     * @return LengthAwarePaginator
      */
     public function find($search)
     {
 
         $search = strtolower($search);
 
-        return Thought::where(DB::raw("lower(body)"), 'like', "%{$search}%")->get();
+        return Searchable::where(DB::raw("lower(body)"), 'like', "%{$search}%")->paginate();
 
     }
 

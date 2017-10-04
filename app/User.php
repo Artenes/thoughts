@@ -2,10 +2,11 @@
 
 namespace Thoughts;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Thoughts\Contracts\SearchableResource;
 
-class User extends Authenticatable
+class User extends Authenticatable implements SearchableResource
 {
     use Notifiable;
 
@@ -26,4 +27,48 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @return int
+     */
+    public function indexIdentifier()
+    {
+
+        return $this->id;
+
+    }
+
+    /**
+     * @return string
+     */
+    public function indexType()
+    {
+
+        return static::class;
+
+    }
+
+    /**
+     * @return string
+     */
+    public function indexBody()
+    {
+
+        return $this->name;
+
+    }
+
+    /**
+     * @return array
+     */
+    public function indexMeta()
+    {
+
+        return [
+            'name' => $this->name,
+            'avatar' => $this->avatar,
+        ];
+
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace Thoughts;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -34,6 +35,21 @@ class Thought extends Model implements SearchableResource
         $this->user_id = $user->id;
 
         return $this->save();
+
+    }
+
+    /**
+     * Scope to get most popular thoughts (most likes)
+     *
+     * @param $query
+     * @return Builder
+     */
+    public function scopePopular($query)
+    {
+
+        $likesCount = '(select count(*) from likes where likes.thought_id = thoughts.id) as likes';
+
+        return Thought::select('*')->addSelect(DB::raw($likesCount))->orderBy('likes', 'DESC');
 
     }
 

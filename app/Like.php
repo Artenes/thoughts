@@ -30,7 +30,7 @@ class Like extends Model
 
             $query->where('user_id', $user->id);
 
-        })->where(DB::raw('lower(body)'), 'like', "%{$search}%")->paginate();
+        })->where(DB::raw('lower(body)'), 'like', "%{$search}%")->paginate()->appends(['s' => $search]);
 
     }
 

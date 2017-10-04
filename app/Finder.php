@@ -24,7 +24,7 @@ class Finder
 
         $search = strtolower($search);
 
-        return Searchable::where(DB::raw("lower(body)"), 'like', "%{$search}%")->paginate();
+        return Searchable::where(DB::raw("lower(body)"), 'like', "%{$search}%")->paginate()->appends(['s' => $search]);
 
     }
 

@@ -23,6 +23,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::post('thoughts', 'ThoughtsController@store');
 
+        Route::post('likes', 'LikesController@store');
+
     });
 
 });

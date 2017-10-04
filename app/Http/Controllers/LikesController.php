@@ -2,7 +2,11 @@
 
 namespace Thoughts\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Thoughts\Http\Requests\StoreLikeRequest;
 use Thoughts\Http\Resources\ThoughtsCollection;
 use Thoughts\Like;
 
@@ -30,6 +34,24 @@ class LikesController extends Controller
         $thoughts = $likes->findUserLikes($user, $request->get('s'));
 
         return new ThoughtsCollection($thoughts);
+
+    }
+
+    /**
+     * Stores as thought like.
+     *
+     * @param StoreLikeRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreLikeRequest $request)
+    {
+
+        $like = Like::create([
+            'user_id' => Auth::user()->id,
+            'thought_id' => $request->get('thought_id'),
+        ]);
+
+        return response()->json($like->toArray(), Response::HTTP_CREATED);
 
     }
 

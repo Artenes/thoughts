@@ -15,6 +15,11 @@ class Like extends Model
 {
 
     /**
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * Search a user's likes.
      *
      * @param User $user

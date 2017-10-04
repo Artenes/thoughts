@@ -18,7 +18,7 @@ class FinderTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function user_can_search_for_thoughts()
+    public function user_can_search_for_something()
     {
 
         $searchable = factory(Searchable::class)->create(['body' => 'My second thought about this.']);
@@ -34,7 +34,7 @@ class FinderTest extends TestCase
     }
 
     /** @test */
-    public function user_can_search_for_thoughts_with_upper_case_letters()
+    public function user_can_search_for_something_with_upper_case_letters()
     {
 
         factory(Searchable::class)->create(['body' => 'My second thought about this.']);

@@ -4,6 +4,7 @@ namespace Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Thoughts\Follower;
 use Thoughts\Searchable;
 use Thoughts\Thought;
 use Thoughts\User;
@@ -67,6 +68,60 @@ class ThoughtTest extends TestCase
 
         $thoughts = (new Thought())->findUserThoughts($user);
         $this->assertCount(11, $thoughts);
+
+    }
+
+    /** @test */
+    public function gets_an_user_feed()
+    {
+
+        $user = factory(User::class)->create();
+
+        $userA = factory(User::class)->create();
+        $userB = factory(User::class)->create();
+
+        $thoughtA = factory(Thought::class)->create(['user_id' => $userA->id, 'created_at' => '2016-10-04 15:22:12']);
+        $thoughtB = factory(Thought::class)->create(['user_id' => $userB->id, 'created_at' => '2017-10-04 15:10:12']);
+
+        factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userA->id]);
+        factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userB->id]);
+
+        $thoughts = (new Thought())->getUserFeed($user);
+
+        $this->assertCount(2, $thoughts);
+
+        $this->assertTrue($thoughts->first()->is($thoughtB));
+        $this->assertTrue($thoughts->last()->is($thoughtA));
+
+    }
+
+    /** @test */
+    public function gets_an_empty_feed_if_user_do_not_has_follows()
+    {
+
+        $user = factory(User::class)->create();
+
+        $thoughts = (new Thought())->getUserFeed($user);
+
+        $this->assertCount(0, $thoughts);
+
+    }
+
+    /** @test */
+    public function gets_an_empty_feed_if_user_follows_has_not_thoughts()
+    {
+
+        $user = factory(User::class)->create();
+
+        $userA = factory(User::class)->create();
+        $userB = factory(User::class)->create();
+
+        factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userA->id]);
+        factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userB->id]);
+
+        $thoughts = (new Thought())->getUserFeed($user);
+
+        $this->assertCount(0, $thoughts);
 
     }
 

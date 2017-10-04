@@ -2,6 +2,7 @@
 
 namespace Thoughts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,6 +52,18 @@ class User extends Authenticatable implements SearchableResource
     {
 
         return $this->hasOne(User::class, 'real_id');
+
+    }
+
+    /**
+     * The user's he is following.
+     *
+     * @return BelongsToMany
+     */
+    public function following()
+    {
+
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id');
 
     }
 

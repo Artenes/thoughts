@@ -27,6 +27,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::post('followers', 'FollowersController@store');
 
+        Route::get('feed', 'FeedController@show');
+
     });
 
 });

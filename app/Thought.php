@@ -126,4 +126,21 @@ class Thought extends Model implements SearchableResource
 
     }
 
+    /**
+     * Retrieves an user feed.
+     *
+     * @param User $user
+     * @return LengthAwarePaginator
+     */
+    public function getUserFeed(User $user)
+    {
+
+        return Thought::whereHas('user', function ($query) use ($user) {
+
+            $query->whereIn('id', $user->following->pluck('id')->all());
+
+        })->latest()->paginate();
+
+    }
+
 }

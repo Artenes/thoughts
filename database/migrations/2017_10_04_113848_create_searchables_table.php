@@ -17,7 +17,7 @@ class CreateSearchablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('Searchables', function (Blueprint $table) {
+        Schema::create('searchables', function (Blueprint $table) {
             $table->increments('id');
             $table->text('body');
             $table->json('meta');
@@ -34,7 +34,7 @@ class CreateSearchablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Searchables');
+        Schema::dropIfExists('searchables');
     }
 
 }

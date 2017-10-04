@@ -24,13 +24,13 @@ class ThoughtsController extends Controller
     /**
      * Browse thoughts.
      *
-     * @param string $type
+     * @param string $filter
      * @return ThoughtsWithUserCollection
      */
-    public function index($type = 'latest')
+    public function index($filter = 'latest')
     {
 
-        if($type === 'popular') {
+        if($filter === 'popular') {
 
             return new ThoughtsWithUserCollection(Thought::popular()->paginate());
 

@@ -3,6 +3,7 @@
 namespace Thoughts;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Thoughts\Contracts\SearchableResource;
@@ -38,6 +39,18 @@ class User extends Authenticatable implements SearchableResource
     {
 
         return $this->hasMany(Thought::class);
+
+    }
+
+    /**
+     * The user's pseudonym.
+     *
+     * @return HasOne
+     */
+    public function pseudonym()
+    {
+
+        return $this->hasOne(User::class, 'real_id');
 
     }
 

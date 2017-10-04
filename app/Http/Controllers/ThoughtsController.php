@@ -49,7 +49,9 @@ class ThoughtsController extends Controller
 
         $thought = new Thought(['body' => $request->get('body')]);
 
-        $thought->postBy(Auth::user());
+        $user = $request->get('as_pseudonym', false) ? Auth::user()->pseudonym : Auth::user();
+
+        $thought->postBy($user);
 
         (new Searchable())->indexResource($thought);
 

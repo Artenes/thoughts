@@ -15,6 +15,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('find', 'FindController@find');
 
+    Route::get('thoughts', 'ThoughtsController@find');
+
     Route::get('likes', 'LikesController@find');
 
     Route::group(['middleware' => 'auth:api'], function () {

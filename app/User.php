@@ -2,6 +2,7 @@
 
 namespace Thoughts;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Thoughts\Contracts\SearchableResource;
@@ -27,6 +28,18 @@ class User extends Authenticatable implements SearchableResource
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The user's thoughts.
+     *
+     * @return HasMany
+     */
+    public function thoughts()
+    {
+
+        return $this->hasMany(Thought::class);
+
+    }
 
     /**
      * @return int

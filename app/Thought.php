@@ -5,6 +5,8 @@ namespace Thoughts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Thoughts\Contracts\SearchableResource;
 
 /**
@@ -105,6 +107,22 @@ class Thought extends Model implements SearchableResource
             ]
 
         ];
+
+    }
+
+    /**
+     * Search for the thoughts of a user.
+     *
+     * @param User $user
+     * @param string $search
+     * @return LengthAwarePaginator
+     */
+    public function findUserThoughts(User $user, $search = '')
+    {
+
+        return $user->thoughts()
+            ->where(DB::raw('lower(body)'), 'like', "%{$search}%")
+            ->paginate()->appends(['s' => $search]);
 
     }
 

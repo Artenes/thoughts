@@ -53,4 +53,21 @@ class ThoughtTest extends TestCase
 
     }
 
+    /** @test */
+    public function search_for_a_user_thoughts()
+    {
+
+        $user = factory(User::class)->create();
+        $thought = factory(Thought::class)->create(['user_id' => $user->id, 'body' => 'This thought is peculiar']);
+        factory(Thought::class, 10)->create(['user_id' => $user->id]);
+
+        $thoughts = (new Thought())->findUserThoughts($user, 'peculiar');
+        $this->assertCount(1, $thoughts);
+        $this->assertEquals($thought->body, $thoughts->first()->body);
+
+        $thoughts = (new Thought())->findUserThoughts($user);
+        $this->assertCount(11, $thoughts);
+
+    }
+
 }

@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  *
  * @package Thoughts\Http\Resources
  */
-class LikedThoughtsCollection extends ResourceCollection
+class ThoughtsCollection extends ResourceCollection
 {
 
     /**
@@ -24,6 +24,7 @@ class LikedThoughtsCollection extends ResourceCollection
         return $this->collection->map(function ($thought) {
 
             return [
+                'id' => $thought->id,
                 'body' => $thought->body,
                 'created_at' => $thought->created_at,
             ];

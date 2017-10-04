@@ -84,6 +84,7 @@ class Thought extends Model implements SearchableResource
 
         return [
 
+            'id' => $this->id,
             'body' => $this->body,
             'user' => [
                 'name' => $this->user->name,

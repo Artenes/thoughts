@@ -11,8 +11,14 @@
 |
 */
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'v1'], function () {
 
-    Route::post('thoughts', 'ThoughtsController@store');
+    Route::get('find', 'FindController@find');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+
+        Route::post('thoughts', 'ThoughtsController@store');
+
+    });
 
 });

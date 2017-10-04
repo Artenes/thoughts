@@ -53,4 +53,15 @@ class Searchable extends Model
 
     }
 
+    /**
+     * @param $value
+     * @return array
+     */
+    public function getMetaAttribute($value)
+    {
+
+        return json_decode($value, true);
+
+    }
+
 }

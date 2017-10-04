@@ -22,7 +22,7 @@ class UserCanSearchForThoughtsTest extends TestCase
     public function user_dont_need_to_be_authenticated_to_search()
     {
 
-        $response = $this->getJson('api/v1/find');
+        $response = $this->getJson('v1/find');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -36,7 +36,7 @@ class UserCanSearchForThoughtsTest extends TestCase
 
         (new Searchable())->indexResource($thought);
 
-        $response = $this->getJson('api/v1/find?s=will be found');
+        $response = $this->getJson('v1/find?s=will be found');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -56,7 +56,7 @@ class UserCanSearchForThoughtsTest extends TestCase
 
         factory(Thought::class)->create(['body' => 'This thought will be found']);
 
-        $response = $this->getJson('api/v1/find?s=will be found');
+        $response = $this->getJson('v1/find?s=will be found');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -68,7 +68,7 @@ class UserCanSearchForThoughtsTest extends TestCase
     public function user_dont_find_a_thought_that_does_not_exists()
     {
 
-        $response = $this->getJson('api/v1/find?s=will be found');
+        $response = $this->getJson('v1/find?s=will be found');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -87,7 +87,7 @@ class UserCanSearchForThoughtsTest extends TestCase
             $searchable->indexResource($thought);
         });
 
-        $response = $this->getJson('api/v1/find');
+        $response = $this->getJson('v1/find');
 
         $response->assertStatus(Response::HTTP_OK);
 

@@ -23,7 +23,7 @@ class UserCanSeeHisFeedTest extends TestCase
     public function user_need_to_be_loged_in_to_see_his_feed()
     {
 
-        $this->withExceptionHandling()->getJson('api/v1/feed')->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $this->withExceptionHandling()->getJson('v1/feed')->assertStatus(Response::HTTP_UNAUTHORIZED);
 
     }
 
@@ -42,7 +42,7 @@ class UserCanSeeHisFeedTest extends TestCase
         factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userA->id]);
         factory(Follower::class)->create(['follower_id' => $user->id, 'followed_id' => $userB->id]);
 
-        $response = $this->actingAs($user, 'api')->getJson('api/v1/feed');
+        $response = $this->actingAs($user, 'api')->getJson('v1/feed');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -63,7 +63,7 @@ class UserCanSeeHisFeedTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user, 'api')->getJson('api/v1/feed');
+        $response = $this->actingAs($user, 'api')->getJson('v1/feed');
 
         $response->assertStatus(Response::HTTP_OK);
 

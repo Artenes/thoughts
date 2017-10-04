@@ -21,7 +21,7 @@ class UserCanFollowAnotherUserTest extends TestCase
     public function user_need_to_be_loged_in_to_follow_another_user()
     {
 
-        $this->withExceptionHandling()->postJson('api/v1/followers')->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $this->withExceptionHandling()->postJson('v1/followers')->assertStatus(Response::HTTP_UNAUTHORIZED);
 
     }
 
@@ -32,7 +32,7 @@ class UserCanFollowAnotherUserTest extends TestCase
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
 
-        $response = $this->actingAs($user, 'api')->postJson('api/v1/followers', [
+        $response = $this->actingAs($user, 'api')->postJson('v1/followers', [
             'user_id' => $anotherUser->id,
         ]);
 
@@ -52,7 +52,7 @@ class UserCanFollowAnotherUserTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user, 'api')->withExceptionHandling()
-            ->postJson('api/v1/likes', ['user_id' => 0])
+            ->postJson('v1/likes', ['user_id' => 0])
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
     }
@@ -64,11 +64,11 @@ class UserCanFollowAnotherUserTest extends TestCase
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
 
-        $this->actingAs($user, 'api')->postJson('api/v1/followers', [
+        $this->actingAs($user, 'api')->postJson('v1/followers', [
             'user_id' => $anotherUser->id,
         ])->assertStatus(Response::HTTP_CREATED);
 
-        $this->actingAs($user, 'api')->postJson('api/v1/followers', [
+        $this->actingAs($user, 'api')->postJson('v1/followers', [
             'user_id' => $anotherUser->id,
         ])->assertStatus(Response::HTTP_CONFLICT);
 
@@ -81,7 +81,7 @@ class UserCanFollowAnotherUserTest extends TestCase
         $user = factory(User::class)->create();
         $pseudonym = factory(User::class)->create(['real_id' => $user->id]);
 
-        $this->actingAs($user, 'api')->postJson('api/v1/followers', [
+        $this->actingAs($user, 'api')->postJson('v1/followers', [
             'user_id' => $pseudonym->id,
         ])->assertStatus(Response::HTTP_BAD_REQUEST);
 
@@ -94,7 +94,7 @@ class UserCanFollowAnotherUserTest extends TestCase
         $user = factory(User::class)->create();
         $pseudonym = factory(User::class)->create(['real_id' => $user->id]);
 
-        $this->actingAs($pseudonym, 'api')->postJson('api/v1/followers', [
+        $this->actingAs($pseudonym, 'api')->postJson('v1/followers', [
             'user_id' => $user->id,
         ])->assertStatus(Response::HTTP_BAD_REQUEST);
 

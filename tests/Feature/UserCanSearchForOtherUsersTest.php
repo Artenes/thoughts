@@ -23,7 +23,7 @@ class UserCanSearchForOtherUsersTest extends TestCase
     public function user_dont_need_to_be_authenticated_to_search()
     {
 
-        $response = $this->getJson('api/v1/find');
+        $response = $this->getJson('v1/find');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -37,7 +37,7 @@ class UserCanSearchForOtherUsersTest extends TestCase
 
         (new Searchable())->indexResource($user);
 
-        $response = $this->getJson('api/v1/find?s=jhon doe');
+        $response = $this->getJson('v1/find?s=jhon doe');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -57,7 +57,7 @@ class UserCanSearchForOtherUsersTest extends TestCase
 
         factory(User::class)->create(['name' => 'Jhon Doe']);
 
-        $response = $this->getJson('api/v1/find?s=jhon doe');
+        $response = $this->getJson('v1/find?s=jhon doe');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -69,7 +69,7 @@ class UserCanSearchForOtherUsersTest extends TestCase
     public function user_dont_find_a_user_that_does_not_exists()
     {
 
-        $response = $this->getJson('api/v1/find?s=jhon doe');
+        $response = $this->getJson('v1/find?s=jhon doe');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -88,7 +88,7 @@ class UserCanSearchForOtherUsersTest extends TestCase
             $searchable->indexResource($thought);
         });
 
-        $response = $this->getJson('api/v1/find');
+        $response = $this->getJson('v1/find');
 
         $response->assertStatus(Response::HTTP_OK);
 

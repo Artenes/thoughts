@@ -22,8 +22,8 @@ class UserCanSeeLatestAndPopularThoughtsTest extends TestCase
     public function user_do_not_need_to_be_loged_in_to_see_thoughts()
     {
 
-        $this->withExceptionHandling()->getJson('api/v1/thoughts/latest')->assertStatus(Response::HTTP_OK);
-        $this->withExceptionHandling()->getJson('api/v1/thoughts/popular')->assertStatus(Response::HTTP_OK);
+        $this->withExceptionHandling()->getJson('v1/thoughts/latest')->assertStatus(Response::HTTP_OK);
+        $this->withExceptionHandling()->getJson('v1/thoughts/popular')->assertStatus(Response::HTTP_OK);
 
     }
 
@@ -35,7 +35,7 @@ class UserCanSeeLatestAndPopularThoughtsTest extends TestCase
         $thoughtB = factory(Thought::class)->create(['created_at' => '2015-10-04 15:10:12']);
         $thoughtC = factory(Thought::class)->create(['created_at' => '2017-10-04 15:10:12']);
 
-        $response = $this->getJson('api/v1/thoughts/latest');
+        $response = $this->getJson('v1/thoughts/latest');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -63,7 +63,7 @@ class UserCanSeeLatestAndPopularThoughtsTest extends TestCase
         factory(Like::class, 23)->create(['thought_id' => $thoughtA->id]);
         factory(Like::class, 100)->create(['thought_id' => $thoughtC->id]);
 
-        $response = $this->getJson('api/v1/thoughts/popular');
+        $response = $this->getJson('v1/thoughts/popular');
 
         $response->assertStatus(Response::HTTP_OK);
 

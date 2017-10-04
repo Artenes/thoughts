@@ -58,4 +58,21 @@ class UserCanLikeAThoughtTest extends TestCase
 
     }
 
+    /** @test */
+    public function can_not_like_a_thought_twice()
+    {
+
+        $user = factory(User::class)->create();
+        $thought = factory(Thought::class)->create();
+
+        $this->actingAs($user, 'api')->postJson('api/v1/likes', [
+            'thought_id' => $thought->id,
+        ])->assertStatus(Response::HTTP_CREATED);
+
+        $this->actingAs($user, 'api')->postJson('api/v1/likes', [
+            'thought_id' => $thought->id,
+        ])->assertStatus(Response::HTTP_CONFLICT);
+
+    }
+
 }

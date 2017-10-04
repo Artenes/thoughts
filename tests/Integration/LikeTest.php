@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Thoughts\Like;
@@ -47,6 +48,21 @@ class LikeTest extends TestCase
         $thoughts = $likes->findUserLikes($user);
 
         $this->assertCount(15, $thoughts);
+
+    }
+
+    /** @test */
+    public function an_user_can_not_like_the_same_thought_twice()
+    {
+
+        $this->expectException(QueryException::class);
+        $this->expectExceptionCode(23000);
+
+        $user = factory(User::class)->create();
+        $thought = factory(Thought::class)->create();
+
+        Like::create(['user_id' => $user->id, 'thought_id' => $thought]);
+        Like::create(['user_id' => $user->id, 'thought_id' => $thought]);
 
     }
 

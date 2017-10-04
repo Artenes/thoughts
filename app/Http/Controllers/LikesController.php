@@ -2,6 +2,7 @@
 
 namespace Thoughts\Http\Controllers;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -46,10 +47,21 @@ class LikesController extends Controller
     public function store(StoreLikeRequest $request)
     {
 
-        $like = Like::create([
-            'user_id' => Auth::user()->id,
-            'thought_id' => $request->get('thought_id'),
-        ]);
+        try {
+
+            $like = Like::create([
+                'user_id' => Auth::user()->id,
+                'thought_id' => $request->get('thought_id'),
+            ]);
+
+        } catch (QueryException $exception) {
+
+            if ($exception->getCode() != 23000)
+                throw $exception;
+
+            return response()->json('You cannot like the same thought twice', Response::HTTP_CONFLICT);
+
+        }
 
         return response()->json($like->toArray(), Response::HTTP_CREATED);
 

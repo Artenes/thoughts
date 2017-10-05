@@ -62,6 +62,8 @@ class UserCanLikeAThoughtTest extends TestCase
     public function can_not_like_a_thought_twice()
     {
 
+        $this->markTestSkipped('This still holds true, but now when a user like a thought twice, that means he is disliking the thought');
+
         $user = factory(User::class)->create();
         $thought = factory(Thought::class)->create();
 
@@ -72,6 +74,28 @@ class UserCanLikeAThoughtTest extends TestCase
         $this->actingAs($user)->postJson('v1/likes', [
             'thought_id' => $thought->id,
         ])->assertStatus(Response::HTTP_CONFLICT);
+
+    }
+
+    /** @test */
+    public function can_dislike_a_thought()
+    {
+
+        $user = factory(User::class)->create();
+        $thought = factory(Thought::class)->create();
+
+        $this->actingAs($user)->postJson('v1/likes', [
+            'thought_id' => $thought->id,
+        ])->assertStatus(Response::HTTP_CREATED);
+
+        $this->actingAs($user)->postJson('v1/likes', [
+            'thought_id' => $thought->id,
+        ])->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $user->id,
+            'thought_id' => $thought->id,
+        ]);
 
     }
 

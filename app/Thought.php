@@ -47,9 +47,9 @@ class Thought extends Model implements SearchableResource
     public function scopePopular($query)
     {
 
-        $likesCount = '(select count(*) from likes where likes.thought_id = thoughts.id) as likes';
+        $likesCount = '(select count(*) from likes where likes.thought_id = thoughts.id) as likes_count';
 
-        return Thought::select('*')->addSelect(DB::raw($likesCount))->orderBy('likes', 'DESC');
+        return Thought::with('likes')->select('*')->addSelect(DB::raw($likesCount))->orderBy('likes_count', 'DESC');
 
     }
 

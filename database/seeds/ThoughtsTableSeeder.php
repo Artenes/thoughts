@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Thoughts\Like;
 use Thoughts\Thought;
 
 /**
@@ -17,7 +18,11 @@ class ThoughtsTableSeeder extends Seeder
     public function run()
     {
 
-        factory(Thought::class, 50)->create();
+        factory(Thought::class, 50)->create()->each(function ($thought) {
+
+            factory(Like::class, random_int(1, 100))->create(['thought_id' => $thought->id]);
+
+        });
 
     }
 

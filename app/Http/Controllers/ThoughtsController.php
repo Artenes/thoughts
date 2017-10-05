@@ -36,7 +36,7 @@ class ThoughtsController extends Controller
 
         }
 
-        return new ThoughtsWithUserCollection(Thought::latest()->paginate());
+        return new ThoughtsWithUserCollection(Thought::with('likes')->latest()->paginate());
 
     }
 

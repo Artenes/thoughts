@@ -5,6 +5,7 @@ namespace Tests\Integration;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Thoughts\Follower;
+use Thoughts\Like;
 use Thoughts\Searchable;
 use Thoughts\Thought;
 use Thoughts\User;
@@ -122,6 +123,18 @@ class ThoughtTest extends TestCase
         $thoughts = (new Thought())->getUserFeed($user);
 
         $this->assertCount(0, $thoughts);
+
+    }
+
+    /** @test */
+    public function gets_amount_of_likes()
+    {
+
+        $thought = factory(Thought::class)->create();
+
+        factory(Like::class, 69)->create(['thought_id' => $thought->id]);
+
+        $this->assertEquals(69, $thought->likes->count());
 
     }
 

@@ -9,18 +9,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Thoughts\Contracts\SearchableResource;
 
+/**
+ * A thinker.
+ *
+ * @package Thoughts
+ */
 class User extends Authenticatable implements SearchableResource
 {
+
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.

@@ -24,7 +24,7 @@ class UserCanPostAThoughtTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user, 'api')->postJson('v1/thoughts', ['body' => 'My first thought about this']);
+        $response = $this->actingAs($user)->postJson('v1/thoughts', ['body' => 'My first thought about this']);
 
         $response->assertStatus(Response::HTTP_CREATED);
 
@@ -46,7 +46,7 @@ class UserCanPostAThoughtTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user, 'api')->withExceptionHandling()->postJson('v1/thoughts', ['body' => '']);
+        $response = $this->actingAs($user)->withExceptionHandling()->postJson('v1/thoughts', ['body' => '']);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -63,7 +63,7 @@ class UserCanPostAThoughtTest extends TestCase
 
         $response = $this->withExceptionHandling()->postJson('v1/thoughts', ['body' => 'This is my thought']);
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
 
     }
 

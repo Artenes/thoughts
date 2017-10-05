@@ -13,6 +13,8 @@
 
 Route::group(['prefix' => 'v1'], function () {
 
+    Route::post('login', 'SocialAuthController@store');
+
     Route::get('find', 'FindController@find');
 
     Route::get('thoughts/user/{id?}', 'ThoughtsController@find');
@@ -21,7 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('likes', 'LikesController@find');
 
-    Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
 
         Route::post('thoughts', 'ThoughtsController@store');
 

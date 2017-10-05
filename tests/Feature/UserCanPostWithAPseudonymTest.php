@@ -24,7 +24,7 @@ class UserCanPostWithAPseudonymTest extends TestCase
         $user = factory(User::class)->create();
         $pseudonym = factory(User::class)->create(['real_id' => $user->id]);
 
-        $response = $this->actingAs($user, 'api')->postJson('v1/thoughts', ['body' => 'My first thought about this', 'as_pseudonym' => true]);
+        $response = $this->actingAs($user)->postJson('v1/thoughts', ['body' => 'My first thought about this', 'as_pseudonym' => true]);
 
         $response->assertStatus(Response::HTTP_CREATED);
 

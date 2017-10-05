@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('real_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
             $table->string('avatar');
+            $table->string('facebook_id')->nullable();
             $table->rememberToken();
             $table->foreign('real_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

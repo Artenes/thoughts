@@ -22,7 +22,7 @@ class UserCanLikeAThoughtTest extends TestCase
     public function user_need_to_be_loged_in_to_like_a_thought()
     {
 
-        $this->withExceptionHandling()->postJson('v1/likes')->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $this->withExceptionHandling()->postJson('v1/likes')->assertStatus(Response::HTTP_BAD_REQUEST);
 
     }
 
@@ -33,7 +33,7 @@ class UserCanLikeAThoughtTest extends TestCase
         $user = factory(User::class)->create();
         $thought = factory(Thought::class)->create();
 
-        $response = $this->actingAs($user, 'api')->postJson('v1/likes', [
+        $response = $this->actingAs($user)->postJson('v1/likes', [
             'thought_id' => $thought->id,
         ]);
 
@@ -52,7 +52,7 @@ class UserCanLikeAThoughtTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->actingAs($user, 'api')->withExceptionHandling()
+        $this->actingAs($user)->withExceptionHandling()
             ->postJson('v1/likes', ['thought_id' => 0])
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -65,11 +65,11 @@ class UserCanLikeAThoughtTest extends TestCase
         $user = factory(User::class)->create();
         $thought = factory(Thought::class)->create();
 
-        $this->actingAs($user, 'api')->postJson('v1/likes', [
+        $this->actingAs($user)->postJson('v1/likes', [
             'thought_id' => $thought->id,
         ])->assertStatus(Response::HTTP_CREATED);
 
-        $this->actingAs($user, 'api')->postJson('v1/likes', [
+        $this->actingAs($user)->postJson('v1/likes', [
             'thought_id' => $thought->id,
         ])->assertStatus(Response::HTTP_CONFLICT);
 

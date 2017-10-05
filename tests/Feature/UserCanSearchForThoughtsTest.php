@@ -44,7 +44,7 @@ class UserCanSearchForThoughtsTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                ['attributes' => ['body' => $thought->body], 'resource' => ['id' => $thought->id]]
+                ['id' => $thought->id, 'body' => $thought->body]
             ]
         ]);
 
@@ -53,6 +53,8 @@ class UserCanSearchForThoughtsTest extends TestCase
     /** @test */
     public function user_dont_find_not_indexed_thoughts()
     {
+
+        $this->markTestSkipped('For now we will not work with indexes anymore');
 
         factory(Thought::class)->create(['body' => 'This thought will be found']);
 

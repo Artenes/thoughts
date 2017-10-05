@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Thoughts\Like;
+use Thoughts\Searchable;
 use Thoughts\Thought;
 
 /**
@@ -18,9 +19,15 @@ class ThoughtsTableSeeder extends Seeder
     public function run()
     {
 
-        factory(Thought::class, 50)->create()->each(function ($thought) {
+        $index = new Searchable();
+
+        factory(Thought::class, 50)->create()->each(function ($thought) use ($index) {
 
             factory(Like::class, random_int(1, 100))->create(['thought_id' => $thought->id]);
+
+            $index->indexResource($thought);
+
+            $index->indexResource($thought->user);
 
         });
 

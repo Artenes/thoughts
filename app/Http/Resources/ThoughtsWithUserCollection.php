@@ -3,6 +3,7 @@
 namespace Thoughts\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Collection of thoughts with user data.
@@ -21,7 +22,9 @@ class ThoughtsWithUserCollection extends ResourceCollection
     public function toArray($request)
     {
 
-        return $this->collection->map(function ($thought) {
+        $userId = Auth::check() ? Auth::user()->id : null;
+
+        return $this->collection->map(function ($thought) use ($userId) {
 
             return [
                 'id' => $thought->id,
@@ -33,6 +36,9 @@ class ThoughtsWithUserCollection extends ResourceCollection
                     'name' => $thought->user->name,
                     'avatar' => $thought->user->avatar,
                 ],
+                'meta' => [
+                    'was_liked' => $thought->likes->where('user_id', $userId)->first() !== null,
+                ]
             ];
 
         })->toArray();

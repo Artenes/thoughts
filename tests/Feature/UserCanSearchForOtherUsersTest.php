@@ -19,6 +19,13 @@ class UserCanSearchForOtherUsersTest extends TestCase
 
     use DatabaseMigrations;
 
+    protected function setUp()
+    {
+
+        $this->markTestSkipped('For now user will not be able to search for other users');
+
+    }
+
     /** @test */
     public function user_dont_need_to_be_authenticated_to_search()
     {

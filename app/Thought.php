@@ -116,6 +116,7 @@ class Thought extends Model implements SearchableResource
         return [
 
             'body' => $this->body,
+            'likes' => $this->likes->count(),
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
@@ -123,6 +124,20 @@ class Thought extends Model implements SearchableResource
             ]
 
         ];
+
+    }
+
+    /**
+     * Search for a thought.
+     *
+     * @param $search
+     * @return mixed
+     */
+    public function find($search)
+    {
+
+        return static::where(DB::raw('lower(body)'), 'like', "%{$search}%")->latest()
+            ->paginate()->appends(['s' => $search]);
 
     }
 

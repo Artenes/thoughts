@@ -30,7 +30,7 @@ class LikesController extends Controller
 
         $likes = new Like();
 
-        $user = $this->resolverUser($request->get('user'));
+        $user = $this->resolveUser($request->get('user'));
 
         $thoughts = $likes->findUserLikes($user, $request->get('s'));
 

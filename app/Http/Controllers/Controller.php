@@ -27,7 +27,7 @@ class Controller extends BaseController
      * @return User
      * @throws ModelNotFoundException
      */
-    protected function resolverUser($userId)
+    protected function resolveUser($userId)
     {
 
         $user = User::find($userId) ?: Auth::user();

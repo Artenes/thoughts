@@ -51,7 +51,7 @@ class ThoughtsController extends Controller
 
         $likes = new Thought();
 
-        $user = $this->resolverUser($id);
+        $user = $this->resolveUser($id);
 
         $thoughts = $likes->findUserThoughts($user, $request->get('s'));
 

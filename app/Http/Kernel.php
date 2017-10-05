@@ -20,6 +20,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Thoughts\Http\Middleware\TrustProxies::class,
         \Thoughts\Http\Middleware\AllowCORS::class,
+        \Thoughts\Http\Middleware\ExtractUserFromToken::class,
     ];
 
     /**

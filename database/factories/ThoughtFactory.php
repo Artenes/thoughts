@@ -15,7 +15,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Thoughts\Thought::class, function (Faker $faker) {
     return [
-        'body' => $faker->text(255),
+        'body' => $faker->text(100),
         'user_id' => function () {
 
             return factory(Thoughts\User::class)->create()->id;

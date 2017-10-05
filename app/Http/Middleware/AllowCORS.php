@@ -30,6 +30,7 @@ class AllowCORS
         $response->headers->add(['Access-Control-Allow-Headers' => 'Content-Type, Authorization, Cache-Control, X-Requested-With']);
         $response->headers->add(['Access-Control-Allow-Credentials' => 'true']);
         $response->headers->add(['Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS']);
+        $response->headers->add(['Access-Control-Expose-Headers' => 'Authorization']);
 
         return $response;
 

@@ -35,6 +35,7 @@ class ThoughtsWithUserCollection extends ResourceCollection
                     'id' => $thought->user->id,
                     'name' => $thought->user->name,
                     'avatar' => $thought->user->avatar,
+                    'username' => $thought->user->username,
                 ],
                 'meta' => [
                     'was_liked' => $thought->likes->where('user_id', $userId)->first() !== null,

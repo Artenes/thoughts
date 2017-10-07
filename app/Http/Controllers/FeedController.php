@@ -3,7 +3,7 @@
 namespace Thoughts\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Thoughts\Http\Resources\ThoughtsWithUserCollection;
+use Thoughts\Http\Resources\ThoughtsCollection;
 use Thoughts\Thought;
 
 /**
@@ -17,14 +17,14 @@ class FeedController extends Controller
     /**
      * Shows the user feed.
      *
-     * @return ThoughtsWithUserCollection
+     * @return ThoughtsCollection
      */
     public function show()
     {
 
         $thoughts = (new Thought())->getUserFeed(Auth::user());
 
-        return new ThoughtsWithUserCollection($thoughts);
+        return (new ThoughtsCollection($thoughts))->withUser();
 
     }
 

@@ -3,9 +3,8 @@
 namespace Thoughts\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Thoughts\Finder;
 use Thoughts\Http\Resources\SearchableCollection;
-use Thoughts\Http\Resources\ThoughtsWithUserCollection;
+use Thoughts\Http\Resources\ThoughtsCollection;
 use Thoughts\Thought;
 
 /**
@@ -27,7 +26,7 @@ class FindController extends Controller
 
         $thoughts = (new Thought())->find($request->get('s'));
 
-        return new ThoughtsWithUserCollection($thoughts);
+        return (new ThoughtsCollection($thoughts))->withUser();
 
     }
 

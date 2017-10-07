@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Thoughts\Http\Requests\StoreThoughtRequest;
 use Thoughts\Http\Resources\ThoughtsCollection;
-use Thoughts\Http\Resources\ThoughtsWithUserCollection;
 use Thoughts\Searchable;
 use Thoughts\Thought;
 
@@ -25,18 +24,22 @@ class ThoughtsController extends Controller
      * Browse thoughts.
      *
      * @param string $filter
-     * @return ThoughtsWithUserCollection
+     * @return ThoughtsCollection
      */
     public function index($filter = 'latest')
     {
 
-        if($filter === 'popular') {
+        if ($filter === 'popular') {
 
-            return new ThoughtsWithUserCollection(Thought::popular()->paginate());
+            $thoughts = Thought::popular()->paginate();
+
+        } else {
+
+            $thoughts = Thought::with('likes')->latest()->paginate();
 
         }
 
-        return new ThoughtsWithUserCollection(Thought::with('likes')->latest()->paginate());
+        return (new ThoughtsCollection($thoughts))->withUser();
 
     }
 

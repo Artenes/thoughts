@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Response;
 use Tests\TestCase;
+use Thoughts\Follower;
 use Thoughts\User;
 
 /**
@@ -58,19 +59,25 @@ class UserCanFollowAnotherUserTest extends TestCase
     }
 
     /** @test */
-    public function can_not_follow_the_same_user_twice()
+    public function can_unfollow_a_user()
     {
 
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
 
-        $this->actingAs($user)->postJson('v1/followers', [
-            'user_id' => $anotherUser->id,
-        ])->assertStatus(Response::HTTP_CREATED);
+        factory(Follower::class)->create([
+            'follower_id' => $user->id,
+            'followed_id' => $anotherUser->id,
+        ]);
 
         $this->actingAs($user)->postJson('v1/followers', [
             'user_id' => $anotherUser->id,
-        ])->assertStatus(Response::HTTP_CONFLICT);
+        ])->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseMissing('followers', [
+            'follower_id' => $user->id,
+            'followed_id' => $anotherUser->id,
+        ]);
 
     }
 

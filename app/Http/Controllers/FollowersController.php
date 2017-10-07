@@ -30,25 +30,33 @@ class FollowersController extends Controller
 
         $follower = Auth::user();
         $followed = User::findOrFail($request->get('user_id'));
+        $status = Response::HTTP_OK;
 
-        try {
+        $follow = Follower::where([
+            ['follower_id', $follower->id],
+            ['followed_id', $followed->id]
+        ])->first();
 
-            $follow = Follower::create($follower, $followed);
+        if($follow) {
 
-        } catch (LogicException $exception) {
+            $follow->delete();
 
-            return response()->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        } else {
 
-        } catch (QueryException $exception) {
+            try {
 
-            if ($exception->getCode() != 23000)
-                throw $exception;
+                $follow = Follower::create($follower, $followed);
+                $status = Response::HTTP_CREATED;
 
-            return response()->json('You cannot follow the same user twice', Response::HTTP_CONFLICT);
+            } catch (LogicException $exception) {
+
+                return response()->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+
+            }
 
         }
 
-        return response()->json($follow->toArray(), Response::HTTP_CREATED);
+        return response()->json($follow->toArray(), $status);
 
     }
 

@@ -25,7 +25,7 @@ class ExtractUserFromToken
     public function handle($request, Closure $next)
     {
 
-        if (!$request->headers->has('authorization'))
+        if (!$request->bearerToken() || $request->bearerToken() === 'null')
             return $next($request);
 
         $user = JWTAuth::setRequest($request)->parseToken()->authenticate();

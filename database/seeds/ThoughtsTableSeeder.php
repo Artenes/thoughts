@@ -25,12 +25,16 @@ class ThoughtsTableSeeder extends Seeder
         $userA = factory(User::class)->create(['email' => 'open_lqwmgpj_user@tfbnw.net', 'facebook_id' => '111308292957826']);
         $userB = factory(User::class)->create(['email' => 'artenesama@gmail.com', 'facebook_id' => '1392574914180319']);
 
-        factory(Thought::class, 50)->create()->each(function ($thought) use ($userA, $userB) {
+        factory(User::class, 4)->create()->each(function ($user) use ($userA, $userB) {
 
-            factory(Like::class, random_int(1, 100))->create(['thought_id' => $thought->id]);
+            factory(Thought::class, 30)->create(['user_id' => $user->id])->each(function ($thought) {
 
-            Follower::create($userA, $thought->user);
-            Follower::create($userB, $thought->user);
+                factory(Like::class, random_int(1, 100))->create(['thought_id' => $thought->id]);
+
+            });
+
+            Follower::create($userA, $user);
+            Follower::create($userB, $user);
 
         });
 

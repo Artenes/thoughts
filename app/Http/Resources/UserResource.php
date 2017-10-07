@@ -18,6 +18,7 @@ class UserResource extends Resource
     {
 
         $userId = Auth::check() ? Auth::user()->id : null;
+        $following = Auth::check() ? Auth::user()->following->where('id', $this->id)->first() !== null : false;
 
         return [
 
@@ -26,9 +27,11 @@ class UserResource extends Resource
                 'name' => $this->name,
                 'username' => $this->username,
                 'followers' => $this->followers->count(),
+                'avatar' => $this->avatar,
             ],
             'meta' => [
                 'is_authenticated' => $userId === $this->id,
+                'following' => $following,
             ]
 
         ];

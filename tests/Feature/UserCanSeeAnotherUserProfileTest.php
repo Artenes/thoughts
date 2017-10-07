@@ -35,7 +35,8 @@ class UserCanSeeAnotherUserProfileTest extends TestCase
                 'id' => $otherUser->id,
                 'name' => $otherUser->name,
                 'username' => $otherUser->username,
-                'followers' => 102
+                'followers' => 102,
+                'avatar' => $otherUser->avatar,
             ],
             'meta' => [
                 'is_authenticated' => false,

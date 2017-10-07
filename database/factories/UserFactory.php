@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(Thoughts\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'username' => $faker->userName,
+        'username' => $faker->userName . str_random(3),
         'email' => $faker->unique()->safeEmail,
         'remember_token' => str_random(10),
         'avatar' => asset('img/placeholder.png'),

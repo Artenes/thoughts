@@ -25,7 +25,7 @@ class UserCanSearchAUserLikesTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->getJson("v1/likes?user={$user->id}")->assertStatus(Response::HTTP_OK);
+        $this->getJson("v1/likes/user/{$user->id}")->assertStatus(Response::HTTP_OK);
 
     }
 
@@ -39,7 +39,7 @@ class UserCanSearchAUserLikesTest extends TestCase
         factory(Like::class, 10)->create(['user_id' => $user->id]);
         factory(Like::class, 10)->create();
 
-        $response = $this->getJson("v1/likes?user={$user->id}&s=random thou");
+        $response = $this->getJson("v1/likes/user/{$user->id}?s=random thou");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(1, $response->json()['data']);
         $response->assertJson([
@@ -48,7 +48,7 @@ class UserCanSearchAUserLikesTest extends TestCase
             ]
         ]);
 
-        $response = $this->getJson("v1/likes?user={$user->id}");
+        $response = $this->getJson("v1/likes/user/{$user->id}");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(11, $response->json()['data']);
 
@@ -64,7 +64,7 @@ class UserCanSearchAUserLikesTest extends TestCase
         factory(Like::class, 10)->create(['user_id' => $user->id]);
         factory(Like::class, 10)->create();
 
-        $response = $this->actingAs($user, 'api')->getJson("v1/likes?s=random thou");
+        $response = $this->actingAs($user)->getJson("v1/likes/user?s=random thou");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(1, $response->json()['data']);
         $response->assertJson([
@@ -73,17 +73,17 @@ class UserCanSearchAUserLikesTest extends TestCase
             ]
         ]);
 
-        $response = $this->actingAs($user, 'api')->getJson("v1/likes");
+        $response = $this->actingAs($user)->getJson("v1/likes/user");
         $response->assertStatus(Response::HTTP_OK);
         $this->assertCount(11, $response->json()['data']);
 
     }
 
     /** @test */
-    public function returns_404_when_user_is_not_loged_in_and_no_user_is_provided_in_query_string()
+    public function returns_404_when_user_is_not_loged_in_and_no_user_is_provided_in_route_parameter()
     {
 
-        $this->withExceptionHandling()->getJson('v1/likes')->assertStatus(Response::HTTP_NOT_FOUND);
+        $this->withExceptionHandling()->getJson('v1/likes/user')->assertStatus(Response::HTTP_NOT_FOUND);
 
     }
 

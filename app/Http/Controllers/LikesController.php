@@ -24,12 +24,12 @@ class LikesController extends Controller
      * @param Request $request
      * @return ThoughtsCollection
      */
-    public function find(Request $request)
+    public function find(Request $request, $id = null)
     {
 
         $likes = new Like();
 
-        $user = $this->resolveUser($request->get('user'));
+        $user = $this->resolveUser($id);
 
         $thoughts = $likes->findUserLikes($user, $request->get('s'));
 

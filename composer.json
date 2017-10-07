@@ -25,7 +25,10 @@
         ],
         "psr-4": {
             "Thoughts\\": "app/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

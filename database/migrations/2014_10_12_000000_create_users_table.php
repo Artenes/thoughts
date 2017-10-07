@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('real_id')->nullable();
             $table->string('name');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('avatar');
             $table->string('facebook_id')->nullable();

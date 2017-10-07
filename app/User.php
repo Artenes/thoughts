@@ -70,6 +70,18 @@ class User extends Authenticatable implements SearchableResource
     }
 
     /**
+     * The user's followers.
+     *
+     * @return BelongsToMany
+     */
+    public function followers()
+    {
+
+        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id');
+
+    }
+
+    /**
      * @return int
      */
     public function indexIdentifier()

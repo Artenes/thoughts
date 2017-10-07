@@ -25,17 +25,12 @@ class ExtractUserFromToken
     public function handle($request, Closure $next)
     {
 
-        try {
+        if (!$request->headers->has('authorization'))
+            return $next($request);
 
-            $user = JWTAuth::parseToken()->authenticate();
+        $user = JWTAuth::setRequest($request)->parseToken()->authenticate();
 
-            Auth::login($user);
-
-        } catch (Exception $exception) {
-
-            //do nothing
-
-        }
+        Auth::login($user);
 
         return $next($request);
 

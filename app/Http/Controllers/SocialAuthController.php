@@ -65,6 +65,7 @@ class SocialAuthController extends Controller
         $user->name = $socialUser->name;
         $user->avatar = $socialUser->avatar;
         $user->{"{$service}_id"} = $socialUser->id;
+        $user->username = slugify($user->name);
         $user->save();
 
         return $user;

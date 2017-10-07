@@ -23,6 +23,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('likes', 'LikesController@find');
 
+    Route::get('user/{username}', 'UsersController@show');
+
     Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
 
         Route::post('thoughts', 'ThoughtsController@store');

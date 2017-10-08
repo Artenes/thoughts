@@ -35,3 +35,18 @@ function slugify($string, $replace = array(), $delimiter = '-')
     return $clean;
 
 }
+
+/**
+ * Generates a random avatar.
+ *
+ * @param null $gender
+ * @return string
+ */
+function rand_avatar($gender = null) {
+
+    $avatar = random_int(1, 99);
+    $gender = $gender ? $gender : array_random(['men', 'women']);
+
+    return "https://randomuser.me/api/portraits/{$gender}/{$avatar}.jpg";
+
+}

@@ -43,7 +43,7 @@ class Pseudonym
             'name' => $this->faker->name,
             'username' => $this->faker->userName . str_random(3),
             'email' => $this->faker->safeEmail,
-            'avatar' => asset('img/pseudonym.jpg')
+            'avatar' => rand_avatar(),
 
         ]);
 

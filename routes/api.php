@@ -23,7 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('likes/user/{id?}', 'LikesController@find');
 
-    Route::get('user/{username}', 'UsersController@show');
+    Route::get('user/{username?}', 'UsersController@show');
 
     Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
 

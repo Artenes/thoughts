@@ -35,6 +35,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('feed', 'FeedController@show');
 
+        Route::get('pseudonym', 'PseudonymController@show');
+
     });
 
 });

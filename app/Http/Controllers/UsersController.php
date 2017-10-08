@@ -3,6 +3,7 @@
 namespace Thoughts\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Thoughts\Http\Resources\UserResource;
 use Thoughts\User;
@@ -34,6 +35,9 @@ class UsersController extends Controller
             $user = Auth::user();
 
         }
+
+        if(!$user)
+            abort(Response::HTTP_NOT_FOUND, 'User not found');
 
         return new UserResource($user);
 

@@ -69,4 +69,37 @@ class UserCanSeeAnotherUserProfileTest extends TestCase
 
     }
 
+    /** @test */
+    public function returns_authenticaded_user_data_when_no_username_is_provided_in_route()
+    {
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->getJson('v1/user');
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'username' => $user->username,
+                'followers' => 0,
+                'avatar' => $user->avatar,
+            ],
+            'meta' => [
+                'is_authenticated' => true,
+            ]
+        ]);
+
+    }
+
+    /** @test */
+    public function returns_404_when_no_username_is_provided_and_no_user_is_authenticated()
+    {
+
+        $this->withExceptionHandling()->getJson('v1/user')->assertStatus(Response::HTTP_NOT_FOUND);
+
+    }
+
 }

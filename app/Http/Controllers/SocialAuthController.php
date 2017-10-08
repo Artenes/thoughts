@@ -78,7 +78,7 @@ class SocialAuthController extends Controller
             $user = User::where('email', $socialUser->email)->first();
 
         if (!$user)
-            $user = new User();
+            $user = new User(['username' => slugify($socialUser->name) . str_random(3)]);
 
         if (empty($socialUser->email)) {
 
@@ -90,7 +90,6 @@ class SocialAuthController extends Controller
         $user->name = $socialUser->name;
         $user->avatar = $socialUser->avatar;
         $user->{"{$service}_id"} = $socialUser->id;
-        $user->username = slugify($user->name);
         $user->save();
 
         if ($user->pseudonym === null) {

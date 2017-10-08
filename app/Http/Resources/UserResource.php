@@ -17,9 +17,6 @@ class UserResource extends Resource
     public function toArray($request)
     {
 
-        $userId = Auth::check() ? Auth::user()->id : null;
-        $following = Auth::check() ? Auth::user()->following->where('id', $this->id)->first() !== null : false;
-
         return [
 
             'data' => [
@@ -30,11 +27,44 @@ class UserResource extends Resource
                 'avatar' => $this->avatar,
             ],
             'meta' => [
-                'is_authenticated' => $userId === $this->id,
-                'following' => $following,
+                'is_authenticated' => $this->isAuthenticatedUser(),
+                'following' => $this->isFollowing(),
             ]
 
         ];
+
+    }
+
+    /**
+     * Checks if it is the authenticated user or its pseudonym.
+     *
+     * @return bool
+     */
+    protected function isAuthenticatedUser()
+    {
+
+        if (!Auth::check())
+            return false;
+
+        $isAuthenticatedUser = Auth::user()->id == $this->id;
+        $isAuthenticatedUserPseudonym = Auth::user()->id == $this->real_id;
+
+        return $isAuthenticatedUser || $isAuthenticatedUserPseudonym;
+
+    }
+
+    /**
+     * Checks if the authenticated user is following this user.
+     *
+     * @return bool
+     */
+    protected function isFollowing()
+    {
+
+        if (!Auth::check())
+            return false;
+
+        return Auth::user()->following->where('id', $this->id)->first() !== null;
 
     }
 

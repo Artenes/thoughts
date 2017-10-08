@@ -20,7 +20,7 @@ class ThoughtsTableSeeder extends Seeder
     public function run()
     {
 
-        foreach (range(1, 50) as $count) {
+        foreach (range(1, 10) as $count) {
 
             factory(User::class)->create([
                 'avatar' => rand_avatar()
@@ -36,7 +36,7 @@ class ThoughtsTableSeeder extends Seeder
 
         Thought::get()->each(function ($thought) {
 
-            $amountOfLikes = random_int(1, 100);
+            $amountOfLikes = random_int(1, 50);
 
             User::inRandomOrder()->take($amountOfLikes)->get()->each(function ($user) use ($thought) {
 
@@ -48,7 +48,7 @@ class ThoughtsTableSeeder extends Seeder
 
         User::get()->each(function ($followed) {
 
-            $amountOfFollowers = random_int(1, 100);
+            $amountOfFollowers = random_int(1, 50);
 
             User::inRandomOrder()->take($amountOfFollowers)->get()->each(function ($follower) use ($followed) {
 

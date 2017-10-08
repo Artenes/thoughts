@@ -5,6 +5,7 @@ namespace Thoughts\Http\Controllers;
 use Illuminate\Http\Response;
 use Laravel\Socialite\Facades\Socialite;
 use Thoughts\Http\Requests\StoreSocialAuthRequest;
+use Thoughts\Pseudonym;
 use Thoughts\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -55,7 +56,7 @@ class SocialAuthController extends Controller
         if (!$user)
             $user = new User();
 
-        if(empty($socialUser->email)){
+        if (empty($socialUser->email)) {
 
             abort(Response::HTTP_BAD_REQUEST, 'Please allow us to retrieve your email');
 
@@ -67,6 +68,9 @@ class SocialAuthController extends Controller
         $user->{"{$service}_id"} = $socialUser->id;
         $user->username = slugify($user->name);
         $user->save();
+
+        if ($user->pseudonym === null)
+            (new Pseudonym())->create($user);
 
         return $user;
 

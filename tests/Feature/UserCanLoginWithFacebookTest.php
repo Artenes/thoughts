@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Response;
+use Laravel\Socialite\AbstractUser as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
-use Tests\TestCase;
 use Mockery as m;
-use Laravel\Socialite\AbstractUser as SocialiteUser;
+use Tests\TestCase;
 use Thoughts\User;
 
 /**
@@ -108,6 +108,46 @@ class UserCanLoginWithFacebookTest extends TestCase
         $response = $this->withExceptionHandling()->postJson('v1/login', ['service' => 'facebook', 'token' => 'some-random-token']);
 
         $response->assertStatus(Response::HTTP_BAD_REQUEST);
+
+    }
+
+    /** @test */
+    public function create_pseudonym_for_new_user_if_he_does_not_have_one()
+    {
+
+        $this->mockSocialite('facebook', 'some-random-token');
+
+        $userId = $this->postJson('v1/login', ['service' => 'facebook', 'token' => 'some-random-token'])->json()['id'];
+
+        $this->assertDatabaseHas('users', ['id' => $userId]);
+
+        $this->assertDatabaseHas('users', ['real_id' => $userId]);
+
+    }
+
+    /** @test */
+    public function do_not_create_pseudonym_for_user_that_already_has_one()
+    {
+
+        $user = factory(User::class)->create([
+            'facebook_id' => 'facebook-id',
+            'name' => 'Jhon Doe',
+            'email' => 'jhon@doe.com',
+            'avatar' => 'https://path.to/avatar',
+        ]);
+
+        factory(User::class)->create(['real_id' => $user->id]);
+
+        $this->mockSocialite('facebook', 'some-random-token', [
+            'id' => 'facebook-id',
+            'name' => 'Jhon Doe Alucard',
+            'email' => 'newmail@mail.com',
+            'avatar' => 'https://new.path.to/avatar',
+        ]);
+
+        $this->postJson('v1/login', ['service' => 'facebook', 'token' => 'some-random-token']);
+
+        $this->assertEquals(1, User::where('real_id', $user->id)->count());
 
     }
 

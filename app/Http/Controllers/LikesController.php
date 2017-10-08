@@ -33,7 +33,7 @@ class LikesController extends Controller
 
         $thoughts = $likes->findUserLikes($user, $request->get('s'));
 
-        return new ThoughtsCollection($thoughts);
+        return (new ThoughtsCollection($thoughts))->withUser();
 
     }
 

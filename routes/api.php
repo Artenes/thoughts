@@ -39,4 +39,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     });
 
+    Route::group(['middleware' => ['jwt.auth']], function () {
+
+        Route::post('swap', 'SocialAuthController@swap');
+
+    });
+
 });

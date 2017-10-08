@@ -2,7 +2,9 @@
 
 namespace Thoughts\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Thoughts\Http\Requests\StoreSocialAuthRequest;
 use Thoughts\Http\Resources\UserResource;
@@ -34,6 +36,27 @@ class SocialAuthController extends Controller
             'token' => $token,
             'user' => (new UserResource($user))->withPseudonym()->toArray(),
         ]);
+
+    }
+
+    /**
+     * Swap the user instance with its pseudonym
+     * and vice-versa.
+     *
+     * @return JsonResponse
+     */
+    public function swap()
+    {
+
+        $user = Auth::user();
+
+        if ($user->isPseudonym()){
+
+            return response()->json(['token' => JWTAuth::fromUser($user->self)]);
+
+        }
+
+        return response()->json(['token' => JWTAuth::fromUser($user->pseudonym)]);
 
     }
 

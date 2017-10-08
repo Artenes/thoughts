@@ -2,6 +2,7 @@
 
 namespace Thoughts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -34,6 +35,16 @@ class User extends Authenticatable implements SearchableResource
     ];
 
     /**
+     * @return bool
+     */
+    public function isPseudonym()
+    {
+
+        return $this->real_id !== null;
+
+    }
+
+    /**
      * The user's thoughts.
      *
      * @return HasMany
@@ -54,6 +65,18 @@ class User extends Authenticatable implements SearchableResource
     {
 
         return $this->hasOne(User::class, 'real_id');
+
+    }
+
+    /**
+     * The pseudonym's real self.
+     *
+     * @return BelongsTo
+     */
+    public function self()
+    {
+
+        return $this->belongsTo(User::class, 'real_id');
 
     }
 

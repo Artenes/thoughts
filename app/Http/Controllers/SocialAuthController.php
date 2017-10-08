@@ -32,7 +32,7 @@ class SocialAuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => (new UserResource($user))->toArray(),
+            'user' => (new UserResource($user))->withPseudonym()->toArray(),
         ]);
 
     }
@@ -70,8 +70,12 @@ class SocialAuthController extends Controller
         $user->username = slugify($user->name);
         $user->save();
 
-        if ($user->pseudonym === null)
+        if ($user->pseudonym === null) {
+
             (new Pseudonym())->create($user);
+            $user->load('pseudonym');
+
+        }
 
         return $user;
 

@@ -5,8 +5,18 @@ namespace Thoughts\Http\Resources;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * User resource.
+ *
+ * @package Thoughts\Http\Resources
+ */
 class UserResource extends Resource
 {
+
+    /**
+     * @var boolean
+     */
+    protected $withPseudonym = false;
 
     /**
      * Transform the resource into an array.
@@ -29,9 +39,31 @@ class UserResource extends Resource
             'meta' => [
                 'is_authenticated' => $this->isAuthenticatedUser(),
                 'following' => $this->isFollowing(),
-            ]
+            ],
+            'pseudonym' => $this->when($this->withPseudonym, function () {
+
+                return [
+                    'id' => $this->pseudonym->id,
+                    'name' => $this->pseudonym->name,
+                    'username' => $this->pseudonym->username,
+                    'avatar' => $this->pseudonym->avatar,
+                ];
+
+            })
 
         ];
+
+    }
+
+    /**
+     * @return $this
+     */
+    public function withPseudonym()
+    {
+
+        $this->withPseudonym = true;
+
+        return $this;
 
     }
 

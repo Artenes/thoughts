@@ -20,6 +20,7 @@ $factory->define(Thoughts\Thought::class, function (Faker $faker) {
 
             return factory(Thoughts\User::class)->create()->id;
 
-        }
+        },
+        'created_at' => $faker->dateTime(),
     ];
 });

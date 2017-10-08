@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use Thoughts\Follower;
 use Thoughts\Like;
-use Thoughts\Searchable;
 use Thoughts\Thought;
 use Thoughts\User;
 
@@ -21,22 +20,47 @@ class ThoughtsTableSeeder extends Seeder
     public function run()
     {
 
-        //Known test facebook users
-        $userA = factory(User::class)->create(['email' => 'open_lqwmgpj_user@tfbnw.net', 'facebook_id' => '111308292957826']);
-        $userB = factory(User::class)->create(['email' => 'artenesama@gmail.com', 'facebook_id' => '1392574914180319']);
+        foreach (range(1, 50) as $count) {
 
-        factory(User::class, 4)->create()->each(function ($user) use ($userA, $userB) {
+            factory(User::class)->create([
+                'avatar' => rand_avatar()
+            ]);
 
-            factory(Thought::class, 30)->create(['user_id' => $user->id])->each(function ($thought) {
+        }
 
-                factory(Like::class, random_int(1, 100))->create(['thought_id' => $thought->id]);
+        User::get()->each(function ($user) {
+
+            factory(Thought::class, 5)->create(['user_id' => $user->id]);
+
+        });
+
+        Thought::get()->each(function ($thought) {
+
+            $amountOfLikes = random_int(1, 100);
+
+            User::inRandomOrder()->take($amountOfLikes)->get()->each(function ($user) use ($thought) {
+
+                factory(Like::class)->create(['thought_id' => $thought->id, 'user_id' => $user->id]);
 
             });
 
-            Follower::create($userA, $user);
-            Follower::create($userB, $user);
+        });
+
+        User::get()->each(function ($followed) {
+
+            $amountOfFollowers = random_int(1, 100);
+
+            User::inRandomOrder()->take($amountOfFollowers)->get()->each(function ($follower) use ($followed) {
+
+                if($follower->is($followed))
+                    return;
+
+                factory(Follower::class)->create(['follower_id' => $follower->id, 'followed_id' => $followed->id]);
+
+            });
 
         });
+
 
     }
 

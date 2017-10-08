@@ -36,7 +36,7 @@ class UserCanLoginWithFacebookTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $response->assertJsonStructure(['token', 'id']);
+        $response->assertJsonStructure(['token', 'user']);
 
         $this->assertDatabaseHas('users', [
             'facebook_id' => 'facebook-id',
@@ -69,9 +69,9 @@ class UserCanLoginWithFacebookTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $response->assertJsonStructure(['token', 'id']);
+        $response->assertJsonStructure(['token', 'user']);
 
-        $response->assertJson(['id' => $user->id]);
+        $response->assertJson(['user' => ['data' => ['id' => $user->id]]]);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -117,7 +117,7 @@ class UserCanLoginWithFacebookTest extends TestCase
 
         $this->mockSocialite('facebook', 'some-random-token');
 
-        $userId = $this->postJson('v1/login', ['service' => 'facebook', 'token' => 'some-random-token'])->json()['id'];
+        $userId = $this->postJson('v1/login', ['service' => 'facebook', 'token' => 'some-random-token'])->json()['user']['data']['id'];
 
         $this->assertDatabaseHas('users', ['id' => $userId]);
 

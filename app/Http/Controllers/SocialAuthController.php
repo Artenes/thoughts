@@ -5,6 +5,7 @@ namespace Thoughts\Http\Controllers;
 use Illuminate\Http\Response;
 use Laravel\Socialite\Facades\Socialite;
 use Thoughts\Http\Requests\StoreSocialAuthRequest;
+use Thoughts\Http\Resources\UserResource;
 use Thoughts\Pseudonym;
 use Thoughts\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -31,7 +32,7 @@ class SocialAuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'id' => $user->id,
+            'user' => (new UserResource($user))->toArray(),
         ]);
 
     }

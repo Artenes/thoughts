@@ -80,8 +80,9 @@ class UserResource extends Resource
 
         $isAuthenticatedUser = Auth::user()->id == $this->id;
         $isAuthenticatedUserPseudonym = Auth::user()->id == $this->real_id;
+        $isAuthenticatedUserRealSelf = Auth::user()->real_id == $this->id;
 
-        return $isAuthenticatedUser || $isAuthenticatedUserPseudonym;
+        return $isAuthenticatedUser || $isAuthenticatedUserPseudonym || $isAuthenticatedUserRealSelf;
 
     }
 

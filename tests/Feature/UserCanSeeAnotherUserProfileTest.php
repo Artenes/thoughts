@@ -50,12 +50,25 @@ class UserCanSeeAnotherUserProfileTest extends TestCase
     {
 
         $user = factory(User::class)->create();
+        $pseudonym = factory(User::class)->create(['real_id' => $user->id]);
 
         $response = $this->getJson("v1/user/{$user->username}");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['meta' => ['is_authenticated' => false]]);
 
+        $response = $this->getJson("v1/user/{$pseudonym->username}");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(['meta' => ['is_authenticated' => false]]);
+
         $response = $this->actingAs($user)->getJson("v1/user/{$user->username}");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(['meta' => ['is_authenticated' => true]]);
+
+        $response = $this->actingAs($pseudonym)->getJson("v1/user/{$user->username}");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson(['meta' => ['is_authenticated' => true]]);
+
+        $response = $this->actingAs($user)->getJson("v1/user/{$pseudonym->username}");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['meta' => ['is_authenticated' => true]]);
 
